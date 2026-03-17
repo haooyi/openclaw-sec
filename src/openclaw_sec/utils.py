@@ -40,9 +40,12 @@ def expand_path(value: str | Path | None) -> Path | None:
 def read_text(path: Path, limit: int = MAX_SCAN_BYTES) -> str:
     if not path.exists() or not path.is_file():
         return ""
-    if path.stat().st_size > limit:
+    try:
+        if path.stat().st_size > limit:
+            return ""
+        return path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
         return ""
-    return path.read_text(encoding="utf-8", errors="ignore")
 
 
 def load_json(path: Path) -> Any:
