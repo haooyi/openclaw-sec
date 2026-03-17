@@ -3,6 +3,7 @@
 [![CI](https://github.com/haooyi/openclaw-sec/actions/workflows/ci.yml/badge.svg)](https://github.com/haooyi/openclaw-sec/actions/workflows/ci.yml)
 [Chinese README (Simplified Chinese)](./README.zh-CN.md)
 [Contributing Guide](./CONTRIBUTING.md) | [Security Policy](./SECURITY.md) | [Changelog](./CHANGELOG.md)
+[Release Notes v0.1.0](./docs/releases/v0.1.0.md) | [Demo Fixture](./examples/redacted-lab/README.md)
 
 `openclaw-sec` is a local-first, low-dependency security audit tool for OpenClaw environments.
 
@@ -142,6 +143,23 @@ Report files:
   json: /path/to/openclaw-sec-report-20260317-230000/report.json
   md: /path/to/openclaw-sec-report-20260317-230000/report.md
   text: /path/to/openclaw-sec-report-20260317-230000/summary.txt
+```
+
+## Demo Fixture
+
+The repository includes a synthetic demo fixture under [`examples/redacted-lab`](./examples/redacted-lab/README.md).
+
+It is designed for quick local trials and intentionally avoids storing pattern-matching fake secrets directly in Git. Instead, a generator script creates a local ignored environment that you can audit safely:
+
+```bash
+./examples/redacted-lab/generate_demo.sh
+cd examples/redacted-lab/generated
+PYTHONPATH=../../../src python3 -m openclaw_sec audit \
+  --config ./openclaw.json \
+  --workspace ./workspace \
+  --output-dir ./report \
+  --no-host \
+  --no-git
 ```
 
 ## Report Outputs

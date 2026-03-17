@@ -19,6 +19,12 @@ The format is inspired by Keep a Changelog, but kept intentionally lightweight f
 - OpenClaw skill wrapper under `skills/openclaw-sec-audit/`
 - English and Simplified Chinese READMEs
 - MIT license
+- release notes for `v0.1.0`
+- a generated demo fixture under `examples/redacted-lab/`
+- community files such as `CONTRIBUTING.md`, `SECURITY.md`, and `CHANGELOG.md`
+- GitHub Actions CI workflow
+- GitHub issue templates and pull request template
+- richer package metadata in `pyproject.toml`
 - unit tests for key V1 behaviors
 
 ### Notes

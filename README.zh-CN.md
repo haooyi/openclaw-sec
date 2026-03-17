@@ -1,6 +1,7 @@
 # openclaw-sec
 
 [English README](./README.md)
+[v0.1.0 发布说明](./docs/releases/v0.1.0.md) | [Demo Fixture](./examples/redacted-lab/README.md)
 
 `openclaw-sec` 是一个本地优先、少依赖的 OpenClaw 环境安全审计工具。
 
@@ -133,6 +134,23 @@ Report files:
   json: /path/to/openclaw-sec-report-20260317-230000/report.json
   md: /path/to/openclaw-sec-report-20260317-230000/report.md
   text: /path/to/openclaw-sec-report-20260317-230000/summary.txt
+```
+
+## Demo Fixture
+
+仓库内提供了一套合成的 demo fixture，位置在 [`examples/redacted-lab`](./examples/redacted-lab/README.md)。
+
+为了避免把可匹配的假 secret 直接提交进 Git 仓库，这个示例采用“生成脚本”的方式，按需在本地创建一个被 Git 忽略的演示环境：
+
+```bash
+./examples/redacted-lab/generate_demo.sh
+cd examples/redacted-lab/generated
+PYTHONPATH=../../../src python3 -m openclaw_sec audit \
+  --config ./openclaw.json \
+  --workspace ./workspace \
+  --output-dir ./report \
+  --no-host \
+  --no-git
 ```
 
 ## 报告输出

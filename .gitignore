@@ -4,3 +4,4 @@ __pycache__/
 .tmp-report/
 openclaw-sec-report-*/
 .venv/
+examples/redacted-lab/generated/
