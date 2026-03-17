@@ -1,6 +1,8 @@
 # openclaw-sec
 
+[![CI](https://github.com/haooyi/openclaw-sec/actions/workflows/ci.yml/badge.svg)](https://github.com/haooyi/openclaw-sec/actions/workflows/ci.yml)
 [Chinese README (Simplified Chinese)](./README.zh-CN.md)
+[Contributing Guide](./CONTRIBUTING.md) | [Security Policy](./SECURITY.md) | [Changelog](./CHANGELOG.md)
 
 `openclaw-sec` is a local-first, low-dependency security audit tool for OpenClaw environments.
 
@@ -16,6 +18,13 @@ The current CLI surface is a single command:
 ```bash
 openclaw-sec audit
 ```
+
+## Project Metadata
+
+- Repository: `haooyi/openclaw-sec`
+- Default branch: `main`
+- License: MIT
+- Maintainer contact: `haooyi@gmail.com`
 
 ## Why
 
