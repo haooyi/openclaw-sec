@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openclaw-sec"
+version = "0.1.0"
+description = "Local security audit tool for OpenClaw environments"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "haooyi", email = "haooyi@gmail.com" }
+]
+dependencies = []
+
+[project.scripts]
+openclaw-sec = "openclaw_sec.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
