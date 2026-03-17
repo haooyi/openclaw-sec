@@ -5,3 +5,4 @@ __pycache__/
 openclaw-sec-report-*/
 .venv/
 examples/redacted-lab/generated/
+.local-docs/
