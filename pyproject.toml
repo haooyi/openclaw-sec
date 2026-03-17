@@ -8,10 +8,43 @@ version = "0.1.0"
 description = "Local security audit tool for OpenClaw environments"
 readme = "README.md"
 requires-python = ">=3.11"
+license = { file = "LICENSE" }
 authors = [
   { name = "haooyi", email = "haooyi@gmail.com" }
 ]
+keywords = [
+  "openclaw",
+  "security",
+  "audit",
+  "secrets",
+  "cli",
+  "devsecops",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+  "Topic :: Security :: Cryptography",
+  "Topic :: System :: Systems Administration",
+  "Topic :: Utilities",
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/haooyi/openclaw-sec"
+Repository = "https://github.com/haooyi/openclaw-sec"
+Issues = "https://github.com/haooyi/openclaw-sec/issues"
+Changelog = "https://github.com/haooyi/openclaw-sec/blob/main/CHANGELOG.md"
+Security = "https://github.com/haooyi/openclaw-sec/blob/main/SECURITY.md"
 
 [project.scripts]
 openclaw-sec = "openclaw_sec.cli:main"

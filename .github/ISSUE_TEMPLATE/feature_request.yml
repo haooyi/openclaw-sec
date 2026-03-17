@@ -1,0 +1,46 @@
+name: Feature request
+description: Suggest a new detector, reporting improvement, or workflow enhancement.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion.
+
+        The project intentionally keeps scope tight, so please explain why the feature fits the local-first, low-dependency design.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve?
+      placeholder: Describe the operational or security gap.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      placeholder: Describe the feature you want to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      placeholder: Mention simpler or lower-dependency alternatives you considered.
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Tradeoffs
+      description: Call out possible complexity, false positives, portability issues, or maintenance cost.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: This proposal does not require printing raw secrets.
+          required: true
+        - label: This proposal fits the local-first design of the project.
+          required: true

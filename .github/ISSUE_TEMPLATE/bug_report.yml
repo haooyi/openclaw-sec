@@ -1,0 +1,72 @@
+name: Bug report
+description: Report a defect, crash, false positive, or false negative in openclaw-sec.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug.
+
+        Please do not include real secrets, tokens, private keys, or other sensitive data.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+      placeholder: A short description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest set of steps needed to reproduce the issue.
+      placeholder: |
+        1. Run ...
+        2. Use config ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: What should have happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: What happened in practice?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, Python version, and how you invoked the tool.
+      placeholder: |
+        OS:
+        Python:
+        Command:
+        OpenClaw version or setup notes:
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Relevant logs or output
+      description: Paste only redacted output. Never include raw secrets.
+      render: text
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Safety checklist
+      options:
+        - label: I removed or masked any real secrets or credentials.
+          required: true
+        - label: I checked whether this issue is already reported.
+          required: true
