@@ -2,32 +2,22 @@ from __future__ import annotations
 
 import argparse
 import shutil
-import tempfile
-import zipapp
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = REPO_ROOT / "src" / "openclaw_sec"
-DEFAULT_OUTPUT = REPO_ROOT / "skills" / "openclaw-sec-audit" / "resources" / "openclaw-sec.pyz"
+DEFAULT_OUTPUT = REPO_ROOT / "skills" / "openclaw-sec-audit" / "resources" / "runtime"
 IGNORE_NAMES = {"__pycache__"}
 IGNORE_SUFFIXES = {".pyc", ".pyo"}
 
 
 def build_bundle(output_path: Path, package_root: Path = PACKAGE_ROOT) -> Path:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory() as tmp:
-        staging_root = Path(tmp)
-        staged_package = staging_root / "openclaw_sec"
-        shutil.copytree(package_root, staged_package, ignore=_ignore_paths)
-        zipapp.create_archive(
-            staging_root,
-            target=output_path,
-            interpreter="/usr/bin/env python3",
-            main="openclaw_sec.cli:main",
-            compressed=True,
-        )
-    output_path.chmod(0o755)
+    if output_path.exists():
+        shutil.rmtree(output_path)
+    output_path.mkdir(parents=True, exist_ok=True)
+    staged_package = output_path / "openclaw_sec"
+    shutil.copytree(package_root, staged_package, ignore=_ignore_paths, dirs_exist_ok=True)
     return output_path
 
 
@@ -38,8 +28,8 @@ def _ignore_paths(_: str, names: list[str]) -> set[str]:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Build the standalone skill bundle for openclaw-sec")
-    parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="Output path for the generated .pyz bundle")
+    parser = argparse.ArgumentParser(description="Build the standalone skill runtime for openclaw-sec")
+    parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="Output directory for the generated runtime tree")
     parser.add_argument("--package-root", default=str(PACKAGE_ROOT), help="Path to the openclaw_sec package source")
     return parser
 

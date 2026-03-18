@@ -151,16 +151,22 @@ class OpenClawSecTests(unittest.TestCase):
     def test_standalone_skill_bundle_runs_without_repo_imports(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             temp_root = Path(tmp)
-            bundle_path = temp_root / "openclaw-sec.pyz"
+            skill_root = temp_root / "openclaw-sec-audit"
+            resources_dir = skill_root / "resources"
+            resources_dir.mkdir(parents=True)
+            wrapper_source = REPO_ROOT / "skills" / "openclaw-sec-audit" / "resources" / "run_audit.sh"
+            wrapper_target = resources_dir / "run_audit.sh"
+            wrapper_target.write_text(wrapper_source.read_text(encoding="utf-8"), encoding="utf-8")
+            wrapper_target.chmod(0o755)
             build = subprocess.run(
-                [sys.executable, str(REPO_ROOT / "scripts" / "build_skill_bundle.py"), "--output", str(bundle_path)],
+                [sys.executable, str(REPO_ROOT / "scripts" / "build_skill_bundle.py"), "--output", str(resources_dir / "runtime")],
                 cwd=REPO_ROOT,
                 check=False,
                 capture_output=True,
                 text=True,
             )
             self.assertEqual(build.returncode, 0, build.stderr)
-            self.assertTrue(bundle_path.exists())
+            self.assertTrue((resources_dir / "runtime" / "openclaw_sec" / "__main__.py").exists())
 
             fixture_root = temp_root / "fixture"
             workspace = fixture_root / "workspace"
@@ -183,9 +189,7 @@ class OpenClawSecTests(unittest.TestCase):
             env.pop("PYTHONPATH", None)
             run = subprocess.run(
                 [
-                    sys.executable,
-                    str(bundle_path),
-                    "audit",
+                    str(wrapper_target),
                     "--config",
                     str(fixture_root / "openclaw.json"),
                     "--workspace",

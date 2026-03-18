@@ -6,8 +6,8 @@ The format is inspired by Keep a Changelog, but kept intentionally lightweight f
 
 ## [Unreleased]
 
-- Added a standalone bundled runtime for the OpenClaw skill path.
-- Added a build script for regenerating the skill bundle.
+- Switched the OpenClaw skill runtime from a `.pyz` bundle to bundled plain Python source under `resources/runtime/`.
+- Kept the build script, now generating a ClawHub-compatible runtime tree instead of a zipapp.
 - Clarified the separate package-install and skill-install modes in the docs.
 
 ## [0.1.0] - 2026-03-18

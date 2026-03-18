@@ -240,7 +240,7 @@ The repository includes a skill wrapper:
 
 - `skills/openclaw-sec-audit/SKILL.md`
 - `skills/openclaw-sec-audit/resources/run_audit.sh`
-- `skills/openclaw-sec-audit/resources/openclaw-sec.pyz`
+- `skills/openclaw-sec-audit/resources/runtime/openclaw_sec/`
 
 You can call it directly:
 
@@ -254,7 +254,7 @@ The skill is expected to:
 - summarize risks and remediation only
 - order remediation steps by severity
 
-The skill runtime is packaged as a standalone Python zipapp so it can run without the main repository checkout. To rebuild the bundle after source changes:
+The skill runtime is packaged as bundled plain Python source so it can run without the main repository checkout and survive ClawHub publishing. To rebuild the bundled runtime after source changes:
 
 ```bash
 python3 scripts/build_skill_bundle.py

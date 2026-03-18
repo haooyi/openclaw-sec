@@ -12,7 +12,7 @@ Run a local security audit against the current OpenClaw installation and runtime
 
 ## How To Execute
 
-Use local shell execution to run `resources/run_audit.sh`. The wrapper invokes the bundled standalone runtime shipped with the skill and does not depend on the repository checkout or `PYTHONPATH`.
+Use local shell execution to run `resources/run_audit.sh`. The wrapper invokes the bundled standalone Python source shipped with the skill and does not depend on the repository checkout or the main project install.
 
 ## Output Requirements
 

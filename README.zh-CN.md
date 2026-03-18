@@ -229,7 +229,7 @@ Markdown 报告包含：
 
 - `skills/openclaw-sec-audit/SKILL.md`
 - `skills/openclaw-sec-audit/resources/run_audit.sh`
-- `skills/openclaw-sec-audit/resources/openclaw-sec.pyz`
+- `skills/openclaw-sec-audit/resources/runtime/openclaw_sec/`
 
 可以直接调用：
 
@@ -243,7 +243,7 @@ skill 的输出要求：
 - 只总结风险与修复建议
 - 修复建议按严重级别排序
 
-skill 的运行时通过独立的 Python zipapp 打包，因此不依赖主项目源码仓库或 `PYTHONPATH`。如果你修改了 `src/openclaw_sec`，需要重新生成 skill bundle：
+skill 的运行时通过内嵌的纯 Python 源码打包，因此不依赖主项目源码仓库，也更适合 ClawHub 的发布链路。如果你修改了 `src/openclaw_sec`，需要重新生成 skill runtime：
 
 ```bash
 python3 scripts/build_skill_bundle.py
