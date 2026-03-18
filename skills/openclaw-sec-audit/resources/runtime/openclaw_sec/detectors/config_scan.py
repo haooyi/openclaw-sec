@@ -69,10 +69,10 @@ def _scan_network_bind_hints(data: dict[str, Any]) -> list[Finding]:
             continue
         if any(token in lowered_key for token in ("bind", "listen", "host", "address")):
             if lowered_value in {"0.0.0.0", "::", "[::]", "*"}:
-                risky.append(f"{key}={value}")
+                risky.append(f"{key}=<wildcard bind>")
                 severe = "critical"
             elif lowered_value.startswith(("10.", "192.168.", "172.")) or lowered_value == "lan":
-                risky.append(f"{key}={value}")
+                risky.append(f"{key}={_describe_private_bind(lowered_value)}")
     if not risky:
         return []
     return [
@@ -139,7 +139,7 @@ def _scan_auth_hints(data: dict[str, Any]) -> list[Finding]:
                         severity="critical" if channels_present else "high",
                         confidence="medium",
                         heuristic=True,
-                        evidence=[f"{key}={value}"],
+                        evidence=[f"{key}={_describe_disabled_setting(rendered)}"],
                         risk="Explicitly weakened auth settings can expose automation endpoints to unintended callers.",
                         recommendation="Enable a non-empty auth mode or gate the instance behind trusted local-only access.",
                         references=["OpenClaw auth heuristic"],
@@ -155,9 +155,9 @@ def _scan_sandbox_hints(data: dict[str, Any]) -> list[Finding]:
         lowered_key = key.lower()
         lowered_value = str(value).strip().lower()
         if lowered_key.endswith("nosandbox") and lowered_value == "true":
-            evidence.append(f"{key}={value}")
+            evidence.append(f"{key}=<disabled sandbox hint>")
         if "sandbox" in lowered_key and lowered_value in {"false", "off", "disabled", "none"}:
-            evidence.append(f"{key}={value}")
+            evidence.append(f"{key}={_describe_disabled_setting(lowered_value)}")
     if not evidence:
         return []
     return [
@@ -183,15 +183,15 @@ def _scan_exec_hints(data: dict[str, Any]) -> list[Finding]:
     evidence: list[str] = []
     allow = tools.get("allow")
     if isinstance(allow, list) and "exec" in allow:
-        evidence.append(f"tools.allow includes exec: {allow}")
+        evidence.append("tools.allow includes exec capability")
     exec_cfg = tools.get("exec")
     if isinstance(exec_cfg, dict):
         security = str(exec_cfg.get("security", "")).lower()
         ask = str(exec_cfg.get("ask", "")).lower()
         if security in {"full", "unrestricted"}:
-            evidence.append(f"tools.exec.security={security}")
+            evidence.append("tools.exec.security indicates unrestricted mode")
         if ask in {"off", "false", "disabled"}:
-            evidence.append(f"tools.exec.ask={ask}")
+            evidence.append("tools.exec.ask appears disabled")
     if not evidence:
         return []
     return [
@@ -233,3 +233,15 @@ def _scan_channel_hints(data: dict[str, Any]) -> list[Finding]:
             )
         )
     return findings
+
+
+def _describe_private_bind(value: str) -> str:
+    if value == "lan":
+        return "<lan bind hint>"
+    return "<private network address>"
+
+
+def _describe_disabled_setting(value: str) -> str:
+    if value == "":
+        return "<empty>"
+    return "<disabled>"

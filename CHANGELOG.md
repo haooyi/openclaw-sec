@@ -6,9 +6,14 @@ The format is inspired by Keep a Changelog, but kept intentionally lightweight f
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-03-18
+
 - Switched the OpenClaw skill runtime from a `.pyz` bundle to bundled plain Python source under `resources/runtime/`.
 - Kept the build script, now generating a ClawHub-compatible runtime tree instead of a zipapp.
 - Clarified the separate package-install and skill-install modes in the docs.
+- Redacted config-derived evidence in heuristic findings so reports no longer echo raw config values.
+- Added regression coverage to ensure config findings do not expose raw bind values, auth settings, or secret-like strings.
+- Added source and maintainer metadata plus stricter no-raw-secret guidance to the bundled skill documentation.
 
 ## [0.1.0] - 2026-03-18
 

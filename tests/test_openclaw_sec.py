@@ -64,6 +64,24 @@ class OpenClawSecTests(unittest.TestCase):
             self.assertIn("EXEC-001", ids)
             self.assertIn("EXEC-002", ids)
 
+    def test_config_findings_do_not_include_raw_values(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_bind_evidence = "server.bind=0.0.0.0"
+            raw_auth_evidence = "auth.token=disabled"
+            raw_secret = "sk-proj-testTESTtestTESTtestTEST1234"
+            (root / "openclaw.json").write_text(
+                '{"server":{"bind":"0.0.0.0"},"auth":{"token":"disabled","exampleSecret":"sk-proj-testTESTtestTESTtestTEST1234"},"browser":{"noSandbox":true},"tools":{"allow":["exec"],"exec":{"security":"full","ask":"off"}}}',
+                encoding="utf-8",
+            )
+            findings, _ = load_and_scan_config(self.make_context(root))
+            all_evidence = "\n".join("\n".join(finding.evidence) for finding in findings)
+            self.assertNotIn(raw_bind_evidence, all_evidence)
+            self.assertNotIn(raw_auth_evidence, all_evidence)
+            self.assertNotIn(raw_secret, all_evidence)
+            self.assertIn("<wildcard bind>", all_evidence)
+            self.assertIn("tools.allow includes exec capability", all_evidence)
+
     def test_secret_redaction_masks_values(self) -> None:
         hits = find_secret_hits('OPENAI_API_KEY="sk-abcdefghijklmnopqrstuvwxyz123456"\nTOKEN=ghp_abcdefghijklmnopqrstuvwxyz1234\n')
         masked = [hit.masked_value for hit in hits]

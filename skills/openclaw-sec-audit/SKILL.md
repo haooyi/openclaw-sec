@@ -1,5 +1,9 @@
 # OpenClaw Security Audit
 
+Source repository: https://github.com/haooyi/openclaw-sec
+
+Maintainer: haooyi
+
 ## Purpose
 
 Run a local security audit against the current OpenClaw installation and runtime environment, then return high-signal risks, impacted locations, and prioritized remediation steps.
@@ -17,6 +21,7 @@ Use local shell execution to run `resources/run_audit.sh`. The wrapper invokes t
 ## Output Requirements
 
 - Never print raw secrets
+- Keep config-derived evidence redacted or summarized instead of echoing raw values
 - Summarize risks, impacted files, priority, and remediation only
 - Order remediation steps as `critical -> high -> medium -> low`
 - If a host check is unsupported or permission-limited, say `skipped` or `unsupported` explicitly
