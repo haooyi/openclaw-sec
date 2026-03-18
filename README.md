@@ -1,6 +1,8 @@
 # openclaw-sec
 
 [![CI](https://github.com/haooyi/openclaw-sec/actions/workflows/ci.yml/badge.svg)](https://github.com/haooyi/openclaw-sec/actions/workflows/ci.yml)
+[![OpenClaw Compatible](https://img.shields.io/badge/OpenClaw-Compatible-blue.svg)](https://github.com/openclaw/openclaw)
+[![Language](https://img.shields.io/badge/Language-English%20%7C%20中文-success)](./README.zh-CN.md)
 [Chinese README (Simplified Chinese)](./README.zh-CN.md)
 [Contributing Guide](./CONTRIBUTING.md) | [Security Policy](./SECURITY.md) | [Changelog](./CHANGELOG.md)
 [Release Notes v0.1.0](./docs/releases/v0.1.0.md) | [Demo Fixture](./examples/redacted-lab/README.md)
