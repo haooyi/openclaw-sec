@@ -6,7 +6,9 @@ The format is inspired by Keep a Changelog, but kept intentionally lightweight f
 
 ## [Unreleased]
 
-- No unreleased changes yet.
+- Added a standalone bundled runtime for the OpenClaw skill path.
+- Added a build script for regenerating the skill bundle.
+- Clarified the separate package-install and skill-install modes in the docs.
 
 ## [0.1.0] - 2026-03-18
 

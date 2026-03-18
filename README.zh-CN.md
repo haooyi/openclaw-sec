@@ -79,6 +79,15 @@ python3 -m pip install -e .
 PYTHONPATH=src python3 -m openclaw_sec audit
 ```
 
+## 安装方式
+
+`openclaw-sec` 现在有两种安装路径：
+
+- **主项目安装**：安装项目本身，然后在命令行中运行 `openclaw-sec audit`
+- **Skill 安装**：安装 `openclaw-sec-audit` skill，让 OpenClaw 调用 skill 自带的独立运行时
+
+Skill 这条路径不是面向普通命令行用户的主安装方式，它的目标是让 OpenClaw 在没有项目源码仓库的情况下也能直接执行审计。
+
 ## 使用方式
 
 V1 只提供一个子命令：
@@ -220,6 +229,7 @@ Markdown 报告包含：
 
 - `skills/openclaw-sec-audit/SKILL.md`
 - `skills/openclaw-sec-audit/resources/run_audit.sh`
+- `skills/openclaw-sec-audit/resources/openclaw-sec.pyz`
 
 可以直接调用：
 
@@ -233,12 +243,24 @@ skill 的输出要求：
 - 只总结风险与修复建议
 - 修复建议按严重级别排序
 
+skill 的运行时通过独立的 Python zipapp 打包，因此不依赖主项目源码仓库或 `PYTHONPATH`。如果你修改了 `src/openclaw_sec`，需要重新生成 skill bundle：
+
+```bash
+python3 scripts/build_skill_bundle.py
+```
+
 ## 开发
 
 运行测试：
 
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -v
+```
+
+重建 skill bundle：
+
+```bash
+python3 scripts/build_skill_bundle.py
 ```
 
 运行本地验证：

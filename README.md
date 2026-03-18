@@ -88,6 +88,15 @@ python3 -m pip install -e .
 PYTHONPATH=src python3 -m openclaw_sec audit
 ```
 
+## Install Modes
+
+`openclaw-sec` supports two installation modes:
+
+- **Package install for CLI**: install the project itself and run `openclaw-sec audit`
+- **Skill install for OpenClaw**: install the `openclaw-sec-audit` skill and let OpenClaw invoke the bundled standalone runtime
+
+The skill path is not the public CLI install path. It is a self-contained runtime for OpenClaw execution.
+
 ## Usage
 
 V1 exposes a single subcommand:
@@ -229,6 +238,7 @@ The repository includes a skill wrapper:
 
 - `skills/openclaw-sec-audit/SKILL.md`
 - `skills/openclaw-sec-audit/resources/run_audit.sh`
+- `skills/openclaw-sec-audit/resources/openclaw-sec.pyz`
 
 You can call it directly:
 
@@ -242,12 +252,24 @@ The skill is expected to:
 - summarize risks and remediation only
 - order remediation steps by severity
 
+The skill runtime is packaged as a standalone Python zipapp so it can run without the main repository checkout. To rebuild the bundle after source changes:
+
+```bash
+python3 scripts/build_skill_bundle.py
+```
+
 ## Development
 
 Run tests:
 
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -v
+```
+
+Rebuild the skill bundle:
+
+```bash
+python3 scripts/build_skill_bundle.py
 ```
 
 Run a local verification:

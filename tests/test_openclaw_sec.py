@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +15,9 @@ from openclaw_sec.detectors.secret_scan import scan_secrets
 from openclaw_sec.models import AuditContext, AuditReport, Finding
 from openclaw_sec.report import render_markdown
 from openclaw_sec.utils import CommandResult, find_secret_hits
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class OpenClawSecTests(unittest.TestCase):
@@ -141,6 +147,65 @@ class OpenClawSecTests(unittest.TestCase):
             findings, _, notes = scan_host()
         self.assertIsInstance(findings, list)
         self.assertTrue(any("skipped" in note for note in notes))
+
+    def test_standalone_skill_bundle_runs_without_repo_imports(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            temp_root = Path(tmp)
+            bundle_path = temp_root / "openclaw-sec.pyz"
+            build = subprocess.run(
+                [sys.executable, str(REPO_ROOT / "scripts" / "build_skill_bundle.py"), "--output", str(bundle_path)],
+                cwd=REPO_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(build.returncode, 0, build.stderr)
+            self.assertTrue(bundle_path.exists())
+
+            fixture_root = temp_root / "fixture"
+            workspace = fixture_root / "workspace"
+            logs = fixture_root / "logs"
+            workspace.mkdir(parents=True)
+            logs.mkdir(parents=True)
+            (fixture_root / "openclaw.json").write_text(
+                '{"env":{"OPENAI_API_KEY":"sk-proj-demoDEMOdemoDEMOdemoDEMO1234"},"browser":{"noSandbox":true},"tools":{"allow":["exec"],"exec":{"security":"full","ask":"off"}},"auth":{"profiles":{}}}',
+                encoding="utf-8",
+            )
+            (fixture_root / ".env").write_text("TOKEN=ghp_demoDEMOdemoDEMOdemoDEMO12345678\n", encoding="utf-8")
+            (workspace / "MEMORY.md").write_text("Bearer demoDEMOdemoDEMOdemoDEMOtoken1234567890\n", encoding="utf-8")
+            (logs / "session.jsonl").write_text(
+                '{"content":"Stored synthetic key sk-ant-demoDEMOdemoDEMOdemoDEMO123456"}\n',
+                encoding="utf-8",
+            )
+
+            report_dir = fixture_root / "report"
+            env = os.environ.copy()
+            env.pop("PYTHONPATH", None)
+            run = subprocess.run(
+                [
+                    sys.executable,
+                    str(bundle_path),
+                    "audit",
+                    "--config",
+                    str(fixture_root / "openclaw.json"),
+                    "--workspace",
+                    str(workspace),
+                    "--output-dir",
+                    str(report_dir),
+                    "--no-host",
+                    "--no-git",
+                ],
+                cwd=temp_root,
+                env=env,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertIn("Plaintext secrets detected in OpenClaw config", run.stdout)
+            self.assertTrue((report_dir / "report.json").exists())
+            self.assertTrue((report_dir / "report.md").exists())
+            self.assertTrue((report_dir / "summary.txt").exists())
 
 
 if __name__ == "__main__":
